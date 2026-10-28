@@ -1,0 +1,1848 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools Hub - កម្រងឧបករណ៍ AI ទំនើប</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Kantumruy Pro & Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google MediaPipe AI Selfie Segmentation CDN for Real AI Person Matting -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/selfie_segmentation.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', 'Plus Jakarta Sans', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #475569;
+        }
+        /* Transparency checkerboard background for PNG */
+        .checkered-bg {
+            background-color: #1e293b;
+            background-image: 
+                linear-gradient(45deg, #0f172a 25%, transparent 25%), 
+                linear-gradient(-45deg, #0f172a 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #0f172a 75%), 
+                linear-gradient(-45deg, transparent 75%, #0f172a 75%);
+            background-size: 16px 16px;
+            background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+        }
+        .glow-card {
+            box-shadow: 0 0 25px -5px rgba(59, 130, 246, 0.08);
+            transition: all 0.3s ease;
+        }
+        .glow-card:hover {
+            box-shadow: 0 0 35px -2px rgba(99, 102, 241, 0.18);
+            border-color: rgba(99, 102, 241, 0.4);
+        }
+        .neon-border {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-indigo-600 selection:text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-50 bg-[#0d1322]/90 backdrop-blur-md border-b border-slate-800/80 px-4 lg:px-8 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo & Title -->
+            <div class="flex items-center gap-3">
+                <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-cyan-500 via-indigo-600 to-fuchsia-500 p-0.5 flex items-center justify-center shadow-lg shadow-cyan-500/25">
+                    <div class="w-full h-full bg-[#0b0f19] rounded-[10px] flex items-center justify-center relative overflow-hidden group">
+                        <div class="absolute inset-0 bg-cyan-500/10 group-hover:bg-cyan-500/20 transition"></div>
+                        <!-- Discovery Icon (Compass / Innovation / Exploration) -->
+                        <i data-lucide="compass" class="w-5 h-5 text-cyan-400 group-hover:rotate-45 transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-bold text-base md:text-lg tracking-wide text-white">AI Tools Hub</h1>
+                        <span class="text-[11px] bg-gradient-to-r from-purple-500 to-indigo-600 px-2 py-0.5 rounded-full font-semibold text-white uppercase tracking-wider">Khmer Edition</span>
+                    </div>
+                    <p class="text-xs text-slate-400 flex items-center gap-1.5">
+                        <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span> 
+                        VIP AI Toolbox • ដំណើរការរហ័ស & ងាយស្រួល
+                    </p>
+                </div>
+            </div>
+
+            <!-- Header Quick Stats & Controls -->
+            <div class="hidden md:flex items-center gap-3">
+                <!-- Language Toggle -->
+                <div class="flex items-center bg-slate-900/80 border border-slate-800 rounded-lg p-1 text-xs">
+                    <button class="px-2.5 py-1 rounded bg-indigo-600/30 text-indigo-300 font-medium flex items-center gap-1 border border-indigo-500/30">
+                        <span class="text-sm">🇰🇭</span> ខ្មែរ
+                    </button>
+                    <button class="px-2.5 py-1 rounded text-slate-400 hover:text-white flex items-center gap-1 transition">
+                        <span class="text-sm">🇺🇸</span> EN
+                    </button>
+                </div>
+
+                <!-- Tools count pill -->
+                <div class="flex items-center gap-2 bg-slate-900/90 border border-slate-800/80 px-3 py-1.5 rounded-xl text-xs text-slate-300">
+                    <i data-lucide="wrench" class="w-4 h-4 text-purple-400"></i>
+                    <span>ឧបករណ៍សរុប: <b class="text-white">៥+ Tools</b></span>
+                </div>
+
+                <!-- Prompt Library Button -->
+                <button class="flex items-center gap-2 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-300 border border-indigo-500/30 px-3.5 py-1.5 rounded-xl text-xs font-medium transition">
+                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                    <span>បណ្ណាល័យ Prompts</span>
+                </button>
+            </div>
+
+            <!-- Profile & Mobile Menu -->
+            <div class="flex items-center gap-2">
+                <button class="flex items-center gap-1.5 bg-rose-950/40 hover:bg-rose-900/40 text-rose-300 border border-rose-800/40 px-3 py-1.5 rounded-xl text-xs transition">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span class="hidden sm:inline">ចាកចេញ</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 py-6 flex-1 w-full space-y-6">
+
+        <!-- Hero Status Card (Inspired by design banner) -->
+        <div class="relative overflow-hidden bg-gradient-to-br from-[#121829] via-[#0e1628] to-[#141b30] border border-slate-800/80 rounded-2xl p-6 md:p-8">
+            <div class="absolute -right-16 -top-16 w-64 h-64 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-16 -bottom-16 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+                <div class="space-y-3 max-w-2xl">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/25 text-indigo-300 text-xs font-medium">
+                        <i data-lucide="sparkle" class="w-3.5 h-3.5"></i>
+                        កម្មវិធីប្រមូលផ្តុំឧបករណ៍ AI ឆ្លាតវៃ
+                    </div>
+                    <h2 class="text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-snug">
+                        កម្រងឧបករណ៍ AI សម្រាប់កិច្ចការងារប្រចាំថ្ងៃ
+                    </h2>
+                    <p class="text-sm md:text-base text-slate-400 leading-relaxed">
+                        បង្កើនល្បឿននៃការងាររបស់អ្នកជាមួយឧបករណ៍ AI ទំនើប៖ លុប Background រូបភាពដោយស្វ័យប្រវត្តិ, កែច្នៃអត្ថបទ Prompt, និងបន្ថែម Filter រូបភាពបានភ្លាមៗដោយមិនបាច់ដំឡើង App ផ្សេង។
+                    </p>
+                </div>
+
+                <!-- Right Progress / Status Widget -->
+                <div class="bg-slate-900/80 border border-slate-800 p-4 rounded-xl min-w-[260px] flex flex-col justify-between space-y-3">
+                    <div class="flex items-center justify-between text-xs">
+                        <span class="text-slate-400">វឌ្ឍនភាពការប្រើប្រាស់</span>
+                        <span id="usagePercent" class="text-indigo-400 font-bold">25%</span>
+                    </div>
+                    <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                        <div id="usageBar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full w-1/4 rounded-full transition-all duration-500"></div>
+                    </div>
+                    <div class="flex items-center justify-between text-xs text-slate-400 pt-1">
+                        <span>បានដំណើរការ: <b id="toolsRunCount" class="text-white">1</b> / 5 ឧបករណ៍</span>
+                        <button onclick="resetStats()" class="text-slate-500 hover:text-slate-300 transition text-[11px] underline">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Pills & Search Section -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 bg-[#0d1322] border border-slate-800/80 p-3 rounded-2xl">
+            <!-- Filter Pills -->
+            <div class="flex flex-wrap items-center gap-2">
+                <button onclick="filterCategory('all')" class="cat-pill active px-3.5 py-1.5 rounded-xl text-xs font-medium bg-indigo-600 text-white transition">
+                    ទាំងអស់
+                </button>
+                <button onclick="filterCategory('image')" class="cat-pill px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span> ឧបករណ៍រូបភាព (Image)
+                </button>
+                <button onclick="filterCategory('ai-restyler')" class="cat-pill px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span> ប្តូរស្ទាយសម្លៀកបំពាក់ (AI)
+                </button>
+                <button onclick="filterCategory('color')" class="cat-pill px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-400"></span> ប្តូរពណ៌រូបភាព (Color)
+                </button>
+                <button onclick="filterCategory('text')" class="cat-pill px-3.5 py-1.5 rounded-xl text-xs font-medium bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-800 transition flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-blue-400"></span> អត្ថបទ & Prompt
+                </button>
+            </div>
+
+            <!-- Search Bar -->
+            <div class="relative min-w-[240px]">
+                <i data-lucide="search" class="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input type="text" id="toolSearch" oninput="searchTools()" placeholder="ស្វែងរកឧបករណ៍ ឬពាក្យគន្លឹះ..." 
+                       class="w-full bg-slate-900/90 border border-slate-800 text-xs rounded-xl pl-9 pr-3 py-2 text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition">
+            </div>
+        </div>
+
+        <!-- Tools Grid Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+
+            <!-- ================= TOOL 1: BACKGROUND REMOVER ================= -->
+            <div class="tool-card glow-card bg-[#0f172a]/95 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between" data-category="image" data-name="remove background លុបរូបភាព កាត់">
+                <div>
+                    <!-- Header Badges -->
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold flex items-center gap-1.5">
+                            <i data-lucide="image-minus" class="w-3.5 h-3.5"></i>
+                            ឧបករណ៍ទី ១ • Image Tool
+                        </span>
+                        <span class="text-xs text-emerald-400 flex items-center gap-1 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded-md">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i> ដំណើរការ
+                        </span>
+                    </div>
+
+                    <!-- Title & Description -->
+                    <h3 class="text-lg font-bold text-white mb-1.5 flex items-center gap-2">
+                        លុប Background រូបភាព
+                        <span class="text-[10px] bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 px-2 py-0.5 rounded-full font-mono">Pro Precision</span>
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        កាត់ផ្ទៃខាងក្រោយដោយស្វ័យប្រវត្តិកម្រិតខ្ពស់ គាំទ្រទាំង **រូបរង្វង់មូល/កញ្ចក់ប៉ោង**, **រូបមនុស្សទូទៅ (AI)**, និង **រូបផលិតផល** ដោយមិនប៉ះពាល់ដល់ពិដាន ឬផ្នែកខាងក្នុងរូបភាពឡើយ។
+                    </p>
+
+                    <!-- Interactive Area -->
+                    <div class="space-y-3 bg-[#0a0f1d] border border-slate-800/90 rounded-xl p-3.5">
+                        
+                        <!-- Upload Input Zone -->
+                        <div id="dropZone" onclick="document.getElementById('bgInputFile').click()" 
+                             class="border-2 border-dashed border-slate-700 hover:border-indigo-500/60 rounded-xl p-3 text-center cursor-pointer transition bg-slate-900/40">
+                            <input type="file" id="bgInputFile" accept="image/*" class="hidden" onchange="handleImageUpload(event)">
+                            <div class="flex flex-col items-center gap-1 text-slate-400">
+                                <div class="w-8 h-8 rounded-full bg-indigo-600/20 text-indigo-400 flex items-center justify-center">
+                                    <i data-lucide="upload-cloud" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-xs font-medium text-slate-300">ចុចទីនេះ ឬទម្លាក់រូបភាព (Upload Image)</span>
+                                <span class="text-[10px] text-slate-500">គាំទ្រទម្រង់ JPG, PNG, WEBP</span>
+                            </div>
+                        </div>
+
+                        <!-- Mode Selection -->
+                        <div class="space-y-1.5 pt-1">
+                            <div class="flex items-center justify-between text-[11px] text-slate-300">
+                                <span class="font-medium">ជ្រើសរើសរបៀបកាត់ (Cutting Mode):</span>
+                                <span id="pickedColorDisplay" class="flex items-center gap-1.5 text-xs text-slate-400">
+                                    ពណ៌ផ្ទៃ: <span id="colorBadge" class="inline-block w-3 h-3 rounded-full border border-slate-600 bg-white"></span>
+                                </span>
+                            </div>
+                            <div class="grid grid-cols-3 gap-1.5">
+                                <button type="button" id="btnModeCircle" onclick="setRemovalMode('circle')" 
+                                        class="mode-btn px-2 py-1.5 rounded-lg text-[10px] font-semibold bg-indigo-600 text-white border border-indigo-500 flex items-center justify-center gap-1 transition shadow-sm">
+                                    <i data-lucide="circle-dot" class="w-3 h-3 text-cyan-300"></i>
+                                    កញ្ចក់រង្វង់ (Lens)
+                                </button>
+                                <button type="button" id="btnModeFlood" onclick="setRemovalMode('flood')" 
+                                        class="mode-btn px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 text-slate-400 border border-slate-700/60 hover:text-white flex items-center justify-center gap-1 transition">
+                                    <i data-lucide="shield-check" class="w-3 h-3 text-emerald-400"></i>
+                                    តែផ្ទៃក្រៅ (Smart)
+                                </button>
+                                <button type="button" id="btnModeAI" onclick="setRemovalMode('ai')" 
+                                        class="mode-btn px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 text-slate-400 border border-slate-700/60 hover:text-white flex items-center justify-center gap-1 transition">
+                                    <i data-lucide="sparkles" class="w-3 h-3 text-amber-300"></i>
+                                    AI មនុស្ស (Person)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Lens Circle Margin Adjustment -->
+                        <div id="circleAdjustControls" class="space-y-1 pt-1 bg-slate-900/60 border border-slate-800 p-2 rounded-lg">
+                            <div class="flex items-center justify-between text-xs text-slate-300">
+                                <span class="flex items-center gap-1"><i data-lucide="scan" class="w-3 h-3 text-indigo-400"></i> ទំហំរង្វង់កាត់ (Circle Radius Trim):</span>
+                                <span id="circleMarginVal" class="text-indigo-400 font-mono font-bold">100%</span>
+                            </div>
+                            <input type="range" id="circleMarginRange" min="80" max="102" value="99" oninput="updateCircleTrim(this.value)" class="w-full accent-indigo-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                            <p class="text-[10px] text-slate-500">គន្លឹះ៖ រំកិលចុះបន្តិចបើនៅសល់គែមសតិចតួចជុំវិញស៊ុមរង្វង់</p>
+                        </div>
+
+                        <!-- Sensitivity Slider -->
+                        <div id="toleranceContainer" class="hidden space-y-1 pt-1">
+                            <div class="flex items-center justify-between text-xs text-slate-400">
+                                <span id="sensitivityLabel">កម្រិតកំណត់ពណ៌ (Tolerance):</span>
+                                <span id="toleranceVal" class="text-indigo-400 font-mono font-bold">35</span>
+                            </div>
+                            <input type="range" id="toleranceRange" min="5" max="90" value="35" oninput="updateTolerance(this.value)" class="w-full accent-indigo-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                        </div>
+
+                        <!-- Manual Touch-up Brush Tools -->
+                        <div class="bg-slate-900/90 border border-slate-800/80 rounded-lg p-2 space-y-1.5">
+                            <div class="flex items-center justify-between text-[11px]">
+                                <span class="text-slate-300 font-medium flex items-center gap-1">
+                                    <i data-lucide="paintbrush" class="w-3 h-3 text-indigo-400"></i>
+                                    ជក់កែសម្រួលដោយដៃ (Manual Brush):
+                                </span>
+                                <div class="flex items-center gap-1">
+                                    <button type="button" id="brushNone" onclick="setBrushTool('none')" class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-400 hover:text-white border border-slate-700">បិទ</button>
+                                    <button type="button" id="brushErase" onclick="setBrushTool('erase')" class="px-2 py-0.5 rounded text-[10px] bg-rose-950/60 text-rose-300 hover:bg-rose-900 border border-rose-800/50 flex items-center gap-1">
+                                        <i data-lucide="eraser" class="w-2.5 h-2.5"></i> លុប
+                                    </button>
+                                    <button type="button" id="brushRestore" onclick="setBrushTool('restore')" class="px-2 py-0.5 rounded text-[10px] bg-emerald-950/60 text-emerald-300 hover:bg-emerald-900 border border-emerald-800/50 flex items-center gap-1">
+                                        <i data-lucide="rotate-ccw" class="w-2.5 h-2.5"></i> ស្តារ
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="brushSizeContainer" class="hidden flex items-center justify-between text-[10px] text-slate-400 pt-1">
+                                <span>ទំហំជក់: <b id="brushSizeVal" class="text-indigo-400">20px</b></span>
+                                <input type="range" id="brushSize" min="5" max="80" value="20" oninput="document.getElementById('brushSizeVal').innerText = this.value + 'px'" class="w-1/2 accent-indigo-500 h-1 bg-slate-800 rounded">
+                            </div>
+                        </div>
+
+                        <!-- Preview Area -->
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <div class="text-center">
+                                <span class="text-[11px] text-slate-400 block mb-1">រូបភាពដើម</span>
+                                <div class="w-full h-40 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden relative cursor-crosshair">
+                                    <canvas id="origCanvas" onclick="pickColorFromCanvas(event)" class="max-h-full max-w-full object-contain hidden"></canvas>
+                                    <span id="origPlaceholder" class="text-[10px] text-slate-600">គ្មានរូបភាព</span>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-[11px] text-indigo-400 block mb-1">លទ្ធផលថ្លា (PNG គុណភាពខ្ពស់)</span>
+                                <div class="w-full h-40 checkered-bg rounded-lg border border-slate-700/60 flex items-center justify-center overflow-hidden relative cursor-default select-none" id="outputContainer">
+                                    <canvas id="outputCanvas" class="max-h-full max-w-full object-contain hidden"></canvas>
+                                    <span id="resPlaceholder" class="text-[10px] text-slate-500">រង់ចាំកាត់...</span>
+                                    <div id="processingSpinner" class="hidden absolute inset-0 bg-slate-900/85 backdrop-blur-xs flex flex-col items-center justify-center gap-2 text-xs text-indigo-400">
+                                        <i data-lucide="loader-2" class="w-6 h-6 animate-spin"></i>
+                                        <span id="spinnerText" class="text-[11px] font-medium text-slate-200">កំពុងដំណើរការកាត់ផ្ទៃខាងក្រោយ...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="pt-4 flex items-center gap-2">
+                    <button id="btnProcessBg" onclick="removeBackgroundProcess()" disabled 
+                            class="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 disabled:opacity-40 disabled:pointer-events-none text-white font-medium text-xs py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-lg shadow-indigo-600/25">
+                        <i data-lucide="wand-2" class="w-3.5 h-3.5"></i>
+                        កាត់ Background ភ្លាមៗ
+                    </button>
+                    <button id="btnDownloadBg" onclick="downloadResultPng()" disabled 
+                            class="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none text-slate-200 text-xs py-2.5 px-3 rounded-xl transition border border-slate-700 flex items-center justify-center gap-1">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        ទាញយក PNG
+                    </button>
+                </div>
+            </div>
+
+<!-- ================= TOOL 4: AI CLOTHING & OUTFIT RESTYLER (NEW FEATURE) ================= -->
+            <div class="tool-card glow-card bg-[#0f172a]/95 border border-amber-500/30 rounded-2xl p-5 flex flex-col justify-between" data-category="image ai-restyler" data-name="clothing outfit restyle ប្តូរស្ទាយ សម្លៀកបំពាក់ ម៉ូត ខោអាវ">
+                <div>
+                    <!-- Header Badges -->
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold flex items-center gap-1.5">
+                            <i data-lucide="shirt" class="w-3.5 h-3.5"></i>
+                            ឧបករណ៍ AI ថ្មី • Restyler
+                        </span>
+                        <span class="text-xs text-amber-400 flex items-center gap-1 bg-amber-950/40 border border-amber-800/40 px-2 py-0.5 rounded-md font-mono text-[10px]">
+                            <i data-lucide="sparkles" class="w-3 h-3"></i> Gemini 3.1 Flash Image
+                        </span>
+                    </div>
+
+                    <!-- Title & Description -->
+                    <h3 class="text-lg font-bold text-white mb-1.5 flex items-center gap-2">
+                        ប្តូរស្ទាយសម្លៀកបំពាក់ & រូបរាង (AI)
+                        <span class="text-[10px] bg-gradient-to-r from-amber-500 to-rose-500 text-white px-2 py-0.5 rounded-full font-bold">Smart AI</span>
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        ប្តូរសម្លៀកបំពាក់ ឈុតការងារ ឈុតប្រពៃណី ឬស្ទីលម៉ូដតាមការបញ្ជា (Image-to-Image Generative AI) ដោយរក្សាទម្រង់មុខ និងរាងកាយដើម។
+                    </p>
+
+                    <!-- Interactive Area -->
+                    <div class="space-y-3 bg-[#0a0f1d] border border-slate-800/90 rounded-xl p-3.5">
+                        <!-- Upload Target Image for Restyle -->
+                        <div onclick="document.getElementById('restyleInputFile').click()" 
+                             class="border-2 border-dashed border-slate-700 hover:border-amber-500/60 rounded-xl p-2.5 text-center cursor-pointer transition bg-slate-900/40 flex items-center justify-center gap-2">
+                            <input type="file" id="restyleInputFile" accept="image/*" class="hidden" onchange="handleRestyleImageUpload(event)">
+                            <i data-lucide="image-plus" class="w-4 h-4 text-amber-400"></i>
+                            <span class="text-xs font-medium text-slate-300" id="restyleUploadLabel">បញ្ចូលរូបមនុស្សដែលចង់ប្តូរស្ទាយ (Upload Photo)</span>
+                        </div>
+
+                        <!-- Quick Outfit Preset Badges -->
+                        <div class="space-y-1.5">
+                            <span class="text-[11px] text-slate-400 block font-medium">ជ្រើសរើសស្ទាយសម្លៀកបំពាក់រហ័ស (Preset Outfits):</span>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-1.5 text-[11px]">
+                                <button type="button" onclick="setRestylePrompt('suit')" class="preset-btn px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-left flex items-center gap-1 border border-slate-700/60">
+                                    <span>👔</span> ឈុតការងារ (Formal Suit)
+                                </button>
+                                <button type="button" onclick="setRestylePrompt('khmer')" class="preset-btn px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-left flex items-center gap-1 border border-slate-700/60">
+                                    <span>🇰🇭</span> ឈុតប្រពៃណីខ្មែរ
+                                </button>
+                                <button type="button" onclick="setRestylePrompt('cyberpunk')" class="preset-btn px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-left flex items-center gap-1 border border-slate-700/60">
+                                    <span>⚡</span> Cyberpunk / Sci-Fi
+                                </button>
+                                <button type="button" onclick="setRestylePrompt('doctor')" class="preset-btn px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-left flex items-center gap-1 border border-slate-700/60">
+                                    <span>🥼</span> ឈុតគ្រូពេទ្យ (Doctor)
+                                </button>
+                                <button type="button" onclick="setRestylePrompt('leather')" class="preset-btn px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-left flex items-center gap-1 border border-slate-700/60">
+                                    <span>🧥</span> អាវស្បែក Biker Jacket
+                                </button>
+                                <button type="button" onclick="setRestylePrompt('casual')" class="preset-btn px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-left flex items-center gap-1 border border-slate-700/60">
+                                    <span>👕</span> អាវយឺត Casual ទំនើប
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Prompt input for AI instruction -->
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-400 flex items-center justify-between">
+                                <span>ការណែនាំដល់ AI (Custom Style Prompt):</span>
+                                <span class="text-[10px] text-amber-400 font-mono">Image-to-Image</span>
+                            </label>
+                            <textarea id="restylePromptInput" rows="2" 
+                                      placeholder="ឧ. ប្តូរសម្លៀកបំពាក់ទៅជាឈុតអាវធំពណ៌ទឹកប៊ិចក្រម៉ៅ ពាក់ក្រវាត់កឆ្នូតក្រហម..." 
+                                      class="w-full bg-slate-900/90 border border-slate-800 text-xs rounded-xl p-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
+                        </div>
+                        <!-- Gemini API Key (required for restyle) -->
+                        <div class="space-y-1">
+                            <label class="text-[11px] text-slate-400">Gemini API Key (សម្រាប់ប្តូរស្ទាយ):</label>
+                            <input type="password" id="geminiApiKey" placeholder="AIza..." 
+                                   class="w-full bg-slate-900/90 border border-slate-800 text-xs rounded-xl p-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
+                            <p class="text-[9px] text-slate-500">Key ត្រូវបានរក្សាទុកក្នុង localStorage។ <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-amber-400 underline">ទទួល Key</a></p>
+                            <p class="text-[9px] text-rose-400 mt-1 leading-tight">⚠️ Browser បិទការហៅ Gemini ដោយផ្ទាល់ (CORS)។ សម្រាប់សាកល្បង សូមបំពេញ Proxy ខាងក្រោម។</p>
+                            <input type="text" id="corsProxy" placeholder="ឧ. https://corsproxy.io/?  (សម្រាប់ demo)" 
+                                   class="w-full mt-1 bg-slate-900/90 border border-slate-800 text-xs rounded-xl p-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
+                            <p class="text-[9px] text-slate-500 mt-0.5">Proxy សាធារណៈមិនសុវត្ថិភាព (API Key អាចលេច)។ ប្រើតែសម្រាប់សាកល្បង។</p>
+                        </div>
+
+                        <!-- Comparison / Result display -->
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <div class="text-center">
+                                <span class="text-[11px] text-slate-400 block mb-1">រូបដើម</span>
+                                <div class="w-full h-36 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden relative">
+                                    <img id="restyleOrigImg" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=60" alt="Original" class="max-h-full max-w-full object-cover">
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-[11px] text-amber-400 block mb-1">លទ្ធផល AI Restyled</span>
+                                <div class="w-full h-36 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden relative" id="restyleResultContainer">
+                                    <img id="restyleResultImg" src="" alt="Restyled" class="max-h-full max-w-full object-cover hidden">
+                                    <span id="restylePlaceholder" class="text-[10px] text-slate-500 p-2 text-center">រង់ចាំបង្កើតស្ទាយថ្មី...</span>
+                                    <!-- AI Spinner -->
+                                    <div id="restyleSpinner" class="hidden absolute inset-0 bg-slate-950/85 backdrop-blur-xs flex flex-col items-center justify-center gap-2 p-2 text-center">
+                                        <i data-lucide="sparkles" class="w-6 h-6 text-amber-400 animate-spin"></i>
+                                        <span id="restyleSpinnerText" class="text-[11px] font-medium text-amber-200">Gemini AI កំពុងកែច្នៃសម្លៀកបំពាក់...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="pt-4 flex items-center gap-2">
+                    <button id="btnGenerateRestyle" onclick="generateAIRestyle()" 
+                            class="flex-1 bg-gradient-to-r from-amber-600 to-rose-600 hover:from-amber-500 hover:to-rose-500 text-white font-medium text-xs py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-lg shadow-amber-600/25">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        ប្តូរស្ទាយសម្លៀកបំពាក់ (Generate)
+                    </button>
+                    <button id="btnDownloadRestyle" onclick="downloadRestyleResult()" disabled 
+                            class="bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:pointer-events-none text-slate-200 text-xs py-2.5 px-3 rounded-xl transition border border-slate-700 flex items-center justify-center gap-1">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        ទាញយក
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= TOOL 5: SELECTIVE COLOR REPLACER (NEW FEATURE) ================= -->
+            <div class="tool-card glow-card bg-[#0f172a]/95 border border-cyan-500/30 rounded-2xl p-5 flex flex-col justify-between" data-category="image color" data-name="color replace ប្តូរពណ៌ កែពណ៌ សម្លៀកបំពាក់ អាវ">
+                <div>
+                    <!-- Header Badges -->
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 text-xs font-semibold flex items-center gap-1.5">
+                            <i data-lucide="palette" class="w-3.5 h-3.5"></i>
+                            ឧបករណ៍ទី ៥ • Color Replacer
+                        </span>
+                        <span class="text-xs text-cyan-400 flex items-center gap-1 bg-cyan-950/40 border border-cyan-800/40 px-2 py-0.5 rounded-md text-[10px]">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i> Real-time
+                        </span>
+                    </div>
+
+                    <!-- Title & Description -->
+                    <h3 class="text-lg font-bold text-white mb-1.5 flex items-center gap-2">
+                        ប្តូរពណ៌សម្លៀកបំពាក់ & វត្ថុជាក់លាក់
+                        <span class="text-[10px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 px-2 py-0.5 rounded-full font-mono">Precision</span>
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        ចុចជ្រើសរើសពណ៌ដើមលើអាវ ឬវត្ថុ រួចប្តូរទៅជាពណ៌ថ្មីភ្លាមៗ ដោយរក្សាកម្រិតពន្លឺ និងផ្នត់សម្លៀកបំពាក់ដូចធម្មជាតិ។
+                    </p>
+
+                    <!-- Interactive Area -->
+                    <div class="space-y-3 bg-[#0a0f1d] border border-slate-800/90 rounded-xl p-3.5">
+                        <!-- Upload Image for Color Swap -->
+                        <div onclick="document.getElementById('colorSwapInputFile').click()" 
+                             class="border-2 border-dashed border-slate-700 hover:border-cyan-500/60 rounded-xl p-2 text-center cursor-pointer transition bg-slate-900/40 flex items-center justify-center gap-2">
+                            <input type="file" id="colorSwapInputFile" accept="image/*" class="hidden" onchange="handleColorSwapImageUpload(event)">
+                            <i data-lucide="upload" class="w-4 h-4 text-cyan-400"></i>
+                            <span class="text-xs font-medium text-slate-300">បញ្ចូលរូបភាពសម្រាប់ប្តូរពណ៌</span>
+                        </div>
+
+                        <!-- Source Color & Target Color Pickers -->
+                        <div class="grid grid-cols-2 gap-2 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800">
+                            <!-- Source color -->
+                            <div>
+                                <span class="text-[10px] text-slate-400 block mb-1">១. ពណ៌ដើមដែលត្រូវប្តូរ:</span>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="sourceColorPicker" value="#3b82f6" onchange="updatePickedSourceColor(this.value)" class="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0">
+                                    <span id="sourceColorHex" class="text-xs font-mono text-slate-300 uppercase">#3B82F6</span>
+                                </div>
+                                <span class="text-[9px] text-slate-500">ចុចលើរូបដើមដើម្បីចង្អុលពណ៌</span>
+                            </div>
+                            <!-- New Target color -->
+                            <div>
+                                <span class="text-[10px] text-cyan-400 block mb-1">២. ជ្រើសរើសពណ៌ថ្មី:</span>
+                                <div class="flex items-center gap-2">
+                                    <input type="color" id="targetColorPicker" value="#ef4444" onchange="handleTargetColorChange(this.value)" class="w-8 h-8 rounded-lg cursor-pointer bg-transparent border-0">
+                                    <span id="targetColorHex" class="text-xs font-mono text-cyan-300 uppercase">#EF4444</span>
+                                </div>
+                                <span class="text-[9px] text-slate-500">ជ្រើសរើសពណ៌ដែលចង់ប្តូរ</span>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Color Swatches with Add / Remove Functionality -->
+                        <div class="space-y-1.5 pt-1">
+                            <div class="flex items-center justify-between text-[11px] text-slate-400">
+                                <span class="flex items-center gap-1">
+                                    <i data-lucide="swatch-book" class="w-3.5 h-3.5 text-cyan-400"></i>
+                                    <span>ពណ៌ពេញនិយម & រក្សាទុក:</span>
+                                </span>
+                                <div class="flex items-center gap-2">
+                                    <button type="button" onclick="saveCurrentTargetColor()" title="រក្សាទុកពណ៌នេះចូល Palette" class="text-[10px] bg-cyan-950/60 hover:bg-cyan-900 border border-cyan-800/60 text-cyan-300 px-2 py-0.5 rounded flex items-center gap-1 transition">
+                                        <i data-lucide="plus" class="w-3 h-3"></i> បន្ថែមពណ៌
+                                    </button>
+                                    <button type="button" onclick="resetColorSwatches()" title="កំណត់ពណ៌ដើមឡើងវិញ" class="text-[10px] text-slate-500 hover:text-slate-300 transition underline">
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Swatches Container (Dynamically Rendered) -->
+                            <div id="swatchListContainer" class="flex flex-wrap items-center gap-2 p-2 bg-slate-900/60 rounded-xl border border-slate-800/80 min-h-[38px]">
+                                <!-- Dynamic swatches injected here -->
+                            </div>
+                            <span class="text-[9px] text-slate-500 block">គន្លឹះ៖ រាល់ពណ៌ដែលអ្នករើសពី RGB នឹងលោតចូលទីនេះ។ ចុចលើសញ្ញា <b class="text-rose-400">×</b> លើគ្រាប់ពណ៌ដើម្បីលុបចេញ។</span>
+                        </div>
+
+                        <!-- Color Match Tolerance Slider -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[11px] text-slate-400">
+                                <span>កម្រិតចាប់ពណ៌ (Match Tolerance):</span>
+                                <span id="colorToleranceVal" class="text-cyan-400 font-bold font-mono">40</span>
+                            </div>
+                            <input type="range" id="colorToleranceRange" min="10" max="90" value="40" oninput="updateColorTolerance(this.value)" class="w-full accent-cyan-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                        </div>
+
+                        <!-- Canvases for Color Swap -->
+                        <div class="grid grid-cols-2 gap-2 pt-1">
+                            <div class="text-center">
+                                <span class="text-[11px] text-slate-400 block mb-1">ចុចលើអាវដើម្បីយកពណ៌</span>
+                                <div class="w-full h-36 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden relative cursor-crosshair">
+                                    <canvas id="colorSwapOrigCanvas" onclick="pickColorForSwap(event)" class="max-h-full max-w-full object-contain"></canvas>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <span class="text-[11px] text-cyan-400 block mb-1">លទ្ធផលប្តូរពណ៌ថ្មី</span>
+                                <div class="w-full h-36 bg-slate-900 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden relative">
+                                    <canvas id="colorSwapResultCanvas" class="max-h-full max-w-full object-contain"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-4 flex items-center gap-2">
+                    <button onclick="applyColorSwap()" 
+                            class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-medium text-xs py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-lg shadow-cyan-600/20">
+                        <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                        ប្តូរពណ៌ឡើងវិញ (Apply Color)
+                    </button>
+                    <button onclick="downloadSwappedColorImage()" 
+                            class="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs py-2.5 px-3 rounded-xl transition border border-slate-700 flex items-center justify-center gap-1">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        ទាញយក
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= TOOL 2: AI TEXT & PROMPT ENHANCER ================= -->
+            <div class="tool-card glow-card bg-[#0f172a]/95 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between" data-category="text" data-name="prompt text អត្ថបទ សរសេរ">
+                <div>
+                    <!-- Header Badges -->
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xs font-semibold flex items-center gap-1.5">
+                            <i data-lucide="message-square-plus" class="w-3.5 h-3.5"></i>
+                            ឧបករណ៍ទី ២ • Text & Prompt
+                        </span>
+                        <span class="text-xs text-emerald-400 flex items-center gap-1 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded-md">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i> ដំណើរការ
+                        </span>
+                    </div>
+
+                    <!-- Title & Description -->
+                    <h3 class="text-lg font-bold text-white mb-1.5 flex items-center gap-2">
+                        ជំនួយការបង្កើត Prompt (RTC Formula)
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        បម្លែងប្រយោគធម្មតាឱ្យក្លាយជា Prompt AI កម្រិតខ្ពស់តាមស្តង់ដារ <b>Role + Task + Context</b> សម្រាប់លទ្ធផលត្រឹមត្រូវ 100%។
+                    </p>
+
+                    <!-- Interactive Area -->
+                    <div class="space-y-3 bg-[#0a0f1d] border border-slate-800/90 rounded-xl p-3.5">
+                        <!-- Quick Templates -->
+                        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 text-[11px]">
+                            <button onclick="setSamplePrompt('designer')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg whitespace-nowrap">🎨 ផ្នែក Design</button>
+                            <button onclick="setSamplePrompt('marketing')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg whitespace-nowrap">📢 Marketing</button>
+                            <button onclick="setSamplePrompt('developer')" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded-lg whitespace-nowrap">💻 Developer</button>
+                        </div>
+
+                        <textarea id="promptInput" rows="3" placeholder="វាយគំនិតខ្លីៗរបស់អ្នកនៅទីនេះ..." 
+                                  class="w-full bg-slate-900/90 border border-slate-800 text-xs rounded-xl p-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition resize-none"></textarea>
+
+                        <!-- Generated Output -->
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                                <span class="flex items-center gap-1"><i data-lucide="sparkles" class="w-3 h-3 text-purple-400"></i> លទ្ធផល Prompt វិជ្ជាជីវៈ:</span>
+                                <button onclick="copyGeneratedPrompt()" class="text-purple-400 hover:text-purple-300 flex items-center gap-0.5">
+                                    <i data-lucide="copy" class="w-3 h-3"></i> ចម្លងទុក
+                                </button>
+                            </div>
+                            <div id="promptOutput" class="h-24 bg-slate-900 border border-slate-800/80 rounded-xl p-2.5 text-xs text-slate-300 overflow-y-auto font-sans leading-relaxed select-all">
+                                ចុចប៊ូតុង "កែលម្អ Prompt" ដើម្បីទទួលលទ្ធផលស្វ័យប្រវត្តិ...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-4">
+                    <button onclick="generateEnhancedPrompt()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-medium text-xs py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-lg shadow-purple-600/20">
+                        <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                        កែលម្អ Prompt ភ្លាមៗ
+                    </button>
+                </div>
+            </div>
+
+            <!-- ================= TOOL 3: IMAGE FILTER & ENHANCE ================= -->
+            <div class="tool-card glow-card bg-[#0f172a]/95 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between" data-category="image utility" data-name="image filter កែរូប ពណ៌">
+                <div>
+                    <!-- Header Badges -->
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="px-2.5 py-1 rounded-lg bg-pink-500/10 border border-pink-500/30 text-pink-400 text-xs font-semibold flex items-center gap-1.5">
+                            <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+                            ឧបករណ៍ទី ៣ • Image Filter
+                        </span>
+                        <span class="text-xs text-emerald-400 flex items-center gap-1 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded-md">
+                            <i data-lucide="check-circle" class="w-3 h-3"></i> ដំណើរការ
+                        </span>
+                    </div>
+
+                    <!-- Title & Description -->
+                    <h3 class="text-lg font-bold text-white mb-1.5 flex items-center gap-2">
+                        ឧបករណ៍កែតម្រូវពណ៌រូបភាព
+                    </h3>
+                    <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                        កែពន្លឺ បន្ថែម Effects ដូចជា Grayscale, Sepia, Invert, ឬ Blur ទៅលើរូបភាពបានភ្លាមៗដោយមិនបាច់ប្រើ Photoshop។
+                    </p>
+
+                    <!-- Interactive Area -->
+                    <div class="space-y-3 bg-[#0a0f1d] border border-slate-800/90 rounded-xl p-3.5">
+                        <!-- Preview Box -->
+                        <div class="w-full h-32 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden relative">
+                            <img id="filterTargetImg" src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=500&auto=format&fit=crop&q=60" 
+                                 alt="Sample" class="max-h-full max-w-full object-cover transition-all duration-300">
+                            <button onclick="document.getElementById('filterInputFile').click()" class="absolute bottom-2 right-2 bg-slate-900/80 hover:bg-slate-900 border border-slate-700 text-white text-[11px] px-2 py-1 rounded-lg flex items-center gap-1">
+                                <i data-lucide="folder" class="w-3 h-3"></i> ដូររូប
+                            </button>
+                            <input type="file" id="filterInputFile" accept="image/*" class="hidden" onchange="handleFilterUpload(event)">
+                        </div>
+
+                        <!-- Filter Options -->
+                        <div class="grid grid-cols-4 gap-1.5 text-[11px]">
+                            <button onclick="applyFilter('none')" class="filter-btn py-1.5 bg-slate-800 rounded-lg text-slate-300 hover:text-white">ធម្មតា</button>
+                            <button onclick="applyFilter('grayscale(100%)')" class="filter-btn py-1.5 bg-slate-800 rounded-lg text-slate-300 hover:text-white">ស-ខ្មៅ</button>
+                            <button onclick="applyFilter('sepia(90%)')" class="filter-btn py-1.5 bg-slate-800 rounded-lg text-slate-300 hover:text-white">Sepia</button>
+                            <button onclick="applyFilter('invert(100%)')" class="filter-btn py-1.5 bg-slate-800 rounded-lg text-slate-300 hover:text-white">Invert</button>
+                        </div>
+
+                        <!-- Brightness Slider -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[11px] text-slate-400">
+                                <span>កម្រិតពន្លឺ (Brightness)</span>
+                                <span id="brightVal" class="text-pink-400 font-bold">100%</span>
+                            </div>
+                            <input type="range" id="brightRange" min="30" max="200" value="100" oninput="changeBrightness(this.value)" class="w-full accent-pink-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <div class="pt-4">
+                    <button onclick="downloadFilteredImage()" class="w-full bg-pink-600 hover:bg-pink-500 text-white font-medium text-xs py-2.5 px-3 rounded-xl transition flex items-center justify-center gap-1.5 shadow-lg shadow-pink-600/20">
+                        <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                        ទាញយករូបភាពដែលបានកែ
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Custom Notification Toast -->
+        <div id="toastMessage" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-800 border border-slate-700 text-white text-xs px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2">
+            <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+            <span id="toastText">បានជោគជ័យ!</span>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-800/80 bg-[#0a0f1d] py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>© 2026 AI Tools Hub Khmer • រចនាឡើងដើម្បីជួយសម្រួលការងារឌីជីថល</p>
+            <div class="flex items-center gap-4 text-slate-400">
+                <a href="#" class="hover:text-white transition">គោលការណ៍ឯកជនភាព</a>
+                <span>•</span>
+                <a href="#" class="hover:text-white transition">លក្ខខណ្ឌប្រើប្រាស់</a>
+                <span>•</span>
+                <a href="#" class="hover:text-white transition">ជំនួយ & សំណួរចម្លើយ</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Application Script Logic -->
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // State trackers
+        let completedTools = new Set(['tool1']);
+        let uploadedImage = null;
+        let selectedBgColor = null; 
+        let removalMode = 'circle'; // Default to 'circle' which matches the user's uploaded fish-eye photo perfectly
+        let currentBrush = 'none'; // 'none', 'erase', 'restore'
+        let isDrawing = false;
+        let aiModelInstance = null;
+        let circleTrimPercent = 99;
+
+        // Tool 4 (AI Restyler) State
+        let restyleImageBase64 = null;
+        let restyleImageMime = "image/jpeg";
+        let restyleHistory = [];
+
+        // Tool 5 (Color Replacer) State
+        let colorSwapImage = null;
+        let pickedSourceRgb = { r: 59, g: 130, b: 246 };
+        let colorTolerance = 40;
+        // Default swatches palette list
+        let customColorSwatches = ['#DC2626', '#16A34A', '#2563EB', '#D97706', '#9333EA', '#EC4899', '#0F172A'];
+
+        // Initialize MediaPipe SelfieSegmentation AI engine
+        function initAIEngine() {
+            if (typeof SelfieSegmentation !== 'undefined' && !aiModelInstance) {
+                try {
+                    aiModelInstance = new SelfieSegmentation({
+                        locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/selfie_segmentation/${file}`
+                    });
+                    aiModelInstance.setOptions({
+                        modelSelection: 1
+                    });
+                } catch (err) {
+                    console.warn("MediaPipe model load error:", err);
+                }
+            }
+        }
+        initAIEngine();
+
+        function updateProgress() {
+            const totalTools = 5;
+            const count = completedTools.size;
+            const percentage = Math.min(100, Math.round((count / totalTools) * 100));
+            
+            document.getElementById('toolsRunCount').innerText = count;
+            document.getElementById('usagePercent').innerText = percentage + '%';
+            document.getElementById('usageBar').style.width = percentage + '%';
+        }
+
+        function resetStats() {
+            completedTools.clear();
+            updateProgress();
+            showToast("បានកំណត់ស្ថិតិឡើងវិញ!");
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('toastMessage');
+            document.getElementById('toastText').innerText = text;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function setRemovalMode(mode) {
+            removalMode = mode;
+            const btnCircle = document.getElementById('btnModeCircle');
+            const btnFlood = document.getElementById('btnModeFlood');
+            const btnAI = document.getElementById('btnModeAI');
+            const circleControls = document.getElementById('circleAdjustControls');
+            const tolContainer = document.getElementById('toleranceContainer');
+
+            [btnCircle, btnFlood, btnAI].forEach(b => {
+                b.className = "mode-btn px-2 py-1.5 rounded-lg text-[10px] font-medium bg-slate-800 text-slate-400 border border-slate-700/60 hover:text-white flex items-center justify-center gap-1 transition";
+            });
+
+            if (mode === 'circle') {
+                btnCircle.className = "mode-btn px-2 py-1.5 rounded-lg text-[10px] font-semibold bg-indigo-600 text-white border border-indigo-500 flex items-center justify-center gap-1 transition shadow-sm";
+                circleControls.classList.remove('hidden');
+                tolContainer.classList.add('hidden');
+                showToast("បានជ្រើសរើសរបៀប 'កញ្ចក់រង្វង់'៖ រក្សាផ្ទៃក្នុងបន្ទប់ទាំងមូល ១០០%");
+            } else if (mode === 'flood') {
+                btnFlood.className = "mode-btn px-2 py-1.5 rounded-lg text-[10px] font-semibold bg-indigo-600 text-white border border-indigo-500 flex items-center justify-center gap-1 transition shadow-sm";
+                circleControls.classList.add('hidden');
+                tolContainer.classList.remove('hidden');
+                document.getElementById('sensitivityLabel').innerText = "កម្រិតកំណត់ពណ៌ក្រៅ (Tolerance):";
+            } else {
+                btnAI.className = "mode-btn px-2 py-1.5 rounded-lg text-[10px] font-semibold bg-indigo-600 text-white border border-indigo-500 flex items-center justify-center gap-1 transition shadow-sm";
+                circleControls.classList.add('hidden');
+                tolContainer.classList.add('hidden');
+            }
+
+            if (uploadedImage) {
+                removeBackgroundProcess();
+            }
+        }
+
+        function updateCircleTrim(val) {
+            circleTrimPercent = parseInt(val, 10);
+            document.getElementById('circleMarginVal').innerText = val + '%';
+            if (uploadedImage && removalMode === 'circle') {
+                removeBackgroundProcess();
+            }
+        }
+
+        // ==========================================
+        // TOOL 1: PRECISION BACKGROUND REMOVER
+        // ==========================================
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    uploadedImage = img;
+                    selectedBgColor = null;
+
+                    // Render original canvas
+                    const origCanvas = document.getElementById('origCanvas');
+                    origCanvas.width = img.naturalWidth;
+                    origCanvas.height = img.naturalHeight;
+                    const ctx = origCanvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+
+                    origCanvas.classList.remove('hidden');
+                    document.getElementById('origPlaceholder').classList.add('hidden');
+
+                    // Sample corner color
+                    const p = ctx.getImageData(0, 0, 1, 1).data;
+                    document.getElementById('colorBadge').style.backgroundColor = `rgb(${p[0]},${p[1]},${p[2]})`;
+
+                    document.getElementById('btnProcessBg').disabled = false;
+                    showToast("រូបភាពត្រូវបានបញ្ចូល! កំពុងកាត់ Background ដោយស្វ័យប្រវត្តិ...");
+
+                    // Auto process right away
+                    removeBackgroundProcess();
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function pickColorFromCanvas(event) {
+            const canvas = document.getElementById('origCanvas');
+            if (!canvas || !uploadedImage) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const x = Math.floor((event.clientX - rect.left) * scaleX);
+            const y = Math.floor((event.clientY - rect.top) * scaleY);
+
+            const ctx = canvas.getContext('2d');
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            selectedBgColor = { r: pixel[0], g: pixel[1], b: pixel[2] };
+
+            document.getElementById('colorBadge').style.backgroundColor = `rgb(${pixel[0]},${pixel[1]},${pixel[2]})`;
+            showToast(`បានជ្រើសពណ៌: rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`);
+
+            if (removalMode !== 'flood') {
+                setRemovalMode('flood');
+            } else {
+                removeBackgroundProcess();
+            }
+        }
+
+        function updateTolerance(val) {
+            document.getElementById('toleranceVal').innerText = val;
+            if (uploadedImage && removalMode === 'flood') {
+                removeBackgroundProcess();
+            }
+        }
+
+        function colorDist(r1, g1, b1, r2, g2, b2) {
+            const rDiff = r1 - r2;
+            const gDiff = g1 - g2;
+            const bDiff = b1 - b2;
+            return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+        }
+
+        async function removeBackgroundProcess() {
+            if (!uploadedImage) return;
+
+            const spinner = document.getElementById('processingSpinner');
+            const spinnerText = document.getElementById('spinnerText');
+            spinner.classList.remove('hidden');
+
+            const canvas = document.getElementById('outputCanvas');
+            const w = uploadedImage.naturalWidth;
+            const h = uploadedImage.naturalHeight;
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+
+            // ----------------------------------------------------
+            // MODE 1: CIRCULAR LENS / MIRROR MODE (Exact solution for user image)
+            // ----------------------------------------------------
+            if (removalMode === 'circle') {
+                spinnerText.innerText = "កំពុងរក្សារង្វង់មូល និងលុបផ្ទៃសខាងក្រៅ...";
+                setTimeout(() => {
+                    // 1. Calculate center and radius
+                    const centerX = w / 2;
+                    const centerY = h / 2;
+                    const baseRadius = Math.min(centerX, centerY);
+                    const trimFactor = (circleTrimPercent || 99) / 100;
+                    const radius = baseRadius * trimFactor;
+
+                    // 2. Clear canvas and clip circle with slight anti-aliasing
+                    ctx.clearRect(0, 0, w, h);
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+                    ctx.closePath();
+                    ctx.clip();
+
+                    // 3. Draw full original image inside clipped area only
+                    ctx.drawImage(uploadedImage, 0, 0, w, h);
+                    ctx.restore();
+
+                    finalizeOutput();
+                }, 80);
+                return;
+            }
+
+            // ----------------------------------------------------
+            // MODE 2: AI NEURAL SEGMENTATION (For standalone persons)
+            // ----------------------------------------------------
+            if (removalMode === 'ai') {
+                spinnerText.innerText = "AI Neural កំពុងវិភាគរាងកាយមនុស្ស...";
+                initAIEngine();
+
+                if (aiModelInstance) {
+                    try {
+                        aiModelInstance.onResults(function(results) {
+                            ctx.clearRect(0, 0, w, h);
+                            ctx.save();
+                            ctx.drawImage(results.segmentationMask, 0, 0, w, h);
+                            ctx.globalCompositeOperation = 'source-in';
+                            ctx.drawImage(uploadedImage, 0, 0, w, h);
+                            ctx.restore();
+                            finalizeOutput();
+                        });
+
+                        await aiModelInstance.send({ image: uploadedImage });
+                        return;
+                    } catch (err) {
+                        console.warn("AI fallback to flood fill:", err);
+                    }
+                }
+            }
+
+            // ----------------------------------------------------
+            // MODE 3: SMART OUTER BOUNDARY FLOOD (Only deletes from image borders)
+            // ----------------------------------------------------
+            setTimeout(() => {
+                ctx.drawImage(uploadedImage, 0, 0, w, h);
+                const imgData = ctx.getImageData(0, 0, w, h);
+                const data = imgData.data;
+                const tolerance = parseInt(document.getElementById('toleranceRange').value, 10);
+
+                let baseColors = [];
+                if (selectedBgColor) {
+                    baseColors.push(selectedBgColor);
+                } else {
+                    // Sample pure border pixels
+                    const corners = [
+                        [0, 0], [w - 1, 0], [0, h - 1], [w - 1, h - 1],
+                        [Math.floor(w / 2), 0], [Math.floor(w / 2), h - 1],
+                        [0, Math.floor(h / 2)], [w - 1, Math.floor(h / 2)]
+                    ];
+                    corners.forEach(([cx, cy]) => {
+                        const idx = (cy * w + cx) * 4;
+                        baseColors.push({ r: data[idx], g: data[idx + 1], b: data[idx + 2] });
+                    });
+                }
+
+                function matchesBg(r, g, b) {
+                    for (let c of baseColors) {
+                        if (colorDist(r, g, b, c.r, c.g, c.b) <= tolerance * 1.5) return true;
+                    }
+                    return false;
+                }
+
+                const visited = new Uint8Array(w * h);
+                const queue = new Int32Array(w * h);
+                let qHead = 0, qTail = 0;
+
+                // Push only image perimeter into BFS queue
+                for (let x = 0; x < w; x++) {
+                    let topIdx = x * 4;
+                    if (matchesBg(data[topIdx], data[topIdx + 1], data[topIdx + 2])) {
+                        visited[x] = 1;
+                        queue[qTail++] = x;
+                    }
+                    let bPixel = (h - 1) * w + x;
+                    let bIdx = bPixel * 4;
+                    if (matchesBg(data[bIdx], data[bIdx + 1], data[bIdx + 2]) && !visited[bPixel]) {
+                        visited[bPixel] = 1;
+                        queue[qTail++] = bPixel;
+                    }
+                }
+
+                for (let y = 0; y < h; y++) {
+                    let lPixel = y * w;
+                    let lIdx = lPixel * 4;
+                    if (!visited[lPixel] && matchesBg(data[lIdx], data[lIdx + 1], data[lIdx + 2])) {
+                        visited[lPixel] = 1;
+                        queue[qTail++] = lPixel;
+                    }
+                    let rPixel = y * w + (w - 1);
+                    let rIdx = rPixel * 4;
+                    if (!visited[rPixel] && matchesBg(data[rIdx], data[rIdx + 1], data[rIdx + 2])) {
+                        visited[rPixel] = 1;
+                        queue[qTail++] = rPixel;
+                    }
+                }
+
+                while (qHead < qTail) {
+                    const curr = queue[qHead++];
+                    const cx = curr % w;
+                    const cy = Math.floor(curr / w);
+
+                    const neighbors = [];
+                    if (cx > 0) neighbors.push(curr - 1);
+                    if (cx < w - 1) neighbors.push(curr + 1);
+                    if (cy > 0) neighbors.push(curr - w);
+                    if (cy < h - 1) neighbors.push(curr + w);
+
+                    for (let n = 0; n < neighbors.length; n++) {
+                        const nIdx = neighbors[n];
+                        if (!visited[nIdx]) {
+                            const pIdx = nIdx * 4;
+                            if (matchesBg(data[pIdx], data[pIdx + 1], data[pIdx + 2])) {
+                                visited[nIdx] = 1;
+                                queue[qTail++] = nIdx;
+                            }
+                        }
+                    }
+                }
+
+                // Delete only outer connected pixels
+                for (let i = 0; i < visited.length; i++) {
+                    if (visited[i] === 1) data[i * 4 + 3] = 0;
+                }
+
+                ctx.putImageData(imgData, 0, 0);
+                finalizeOutput();
+            }, 80);
+        }
+
+        function finalizeOutput() {
+            const spinner = document.getElementById('processingSpinner');
+            const canvas = document.getElementById('outputCanvas');
+            spinner.classList.add('hidden');
+            canvas.classList.remove('hidden');
+            document.getElementById('resPlaceholder').classList.add('hidden');
+            document.getElementById('btnDownloadBg').disabled = false;
+
+            completedTools.add('bgRemover');
+            updateProgress();
+            showToast("កាត់ Background បានជោគជ័យ! ផ្នែកខាងក្នុងមិនប៉ះពាល់ឡើយ");
+            setupBrushCanvas();
+        }
+
+        // ==========================================
+        // MANUAL TOUCH-UP BRUSH LOGIC (ERASE / RESTORE)
+        // ==========================================
+        function setBrushTool(tool) {
+            currentBrush = tool;
+            const bNone = document.getElementById('brushNone');
+            const bErase = document.getElementById('brushErase');
+            const bRestore = document.getElementById('brushRestore');
+            const brushSizeCont = document.getElementById('brushSizeContainer');
+            const outputCanvas = document.getElementById('outputCanvas');
+
+            [bNone, bErase, bRestore].forEach(b => {
+                b.classList.remove('ring-2', 'ring-indigo-400', 'font-bold');
+            });
+
+            if (tool === 'none') {
+                bNone.classList.add('ring-2', 'ring-indigo-400');
+                brushSizeCont.classList.add('hidden');
+                outputCanvas.style.cursor = 'default';
+            } else if (tool === 'erase') {
+                bErase.classList.add('ring-2', 'ring-indigo-400', 'font-bold');
+                brushSizeCont.classList.remove('hidden');
+                outputCanvas.style.cursor = 'crosshair';
+                showToast("មុខងារ 'លុប'៖ ចុចអូសលើកន្លែងដែលចង់លុបបន្ថែម");
+            } else if (tool === 'restore') {
+                bRestore.classList.add('ring-2', 'ring-indigo-400', 'font-bold');
+                brushSizeCont.classList.remove('hidden');
+                outputCanvas.style.cursor = 'crosshair';
+                showToast("មុខងារ 'ស្តារ'៖ ចុចអូសលើកន្លែងដែលចង់យកមកវិញ");
+            }
+        }
+
+        function setupBrushCanvas() {
+            const canvas = document.getElementById('outputCanvas');
+            canvas.onmousedown = (e) => { isDrawing = true; applyBrush(e); };
+            window.onmouseup = () => { isDrawing = false; };
+            canvas.onmousemove = (e) => { if (isDrawing) applyBrush(e); };
+
+            // Mobile Touch support
+            canvas.ontouchstart = (e) => { isDrawing = true; applyBrush(e.touches[0]); };
+            window.ontouchend = () => { isDrawing = false; };
+            canvas.ontouchmove = (e) => { if (isDrawing) applyBrush(e.touches[0]); };
+        }
+
+        function applyBrush(event) {
+            if (currentBrush === 'none' || !uploadedImage) return;
+
+            const canvas = document.getElementById('outputCanvas');
+            const ctx = canvas.getContext('2d');
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const x = (event.clientX - rect.left) * scaleX;
+            const y = (event.clientY - rect.top) * scaleY;
+            const radius = parseInt(document.getElementById('brushSize').value, 10);
+
+            ctx.save();
+            if (currentBrush === 'erase') {
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (currentBrush === 'restore') {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(uploadedImage, 0, 0, canvas.width, canvas.height);
+                ctx.restore();
+            }
+            ctx.restore();
+        }
+
+        function downloadResultPng() {
+            const canvas = document.getElementById('outputCanvas');
+            const link = document.createElement('a');
+            link.download = 'clean-cutout-transparent.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast("បានទាញយក PNG គុណភាពខ្ពស់ដោយជោគជ័យ!");
+        }
+
+        // ==========================================
+        // TOOL 2: PROMPT ENHANCER LOGIC
+        // ==========================================
+        const samplePrompts = {
+            designer: "ចង់បាន Logo សម្រាប់ហាងកាហ្វេបែប Minimalist ទំនើប ពណ៌ទឹកដម និងខ្មៅ",
+            marketing: "សរសេរ Facebook Post ផ្សព្វផ្សាយប្រូម៉ូសិនបញ្ចុះតម្លៃ ៥០% សម្រាប់រដូវបុណ្យភ្ជុំបិណ្ឌ",
+            developer: "សរសេរកូដ Python script សម្រាប់ទាញយកទិន្នន័យ (Web Scraping) ពីគេហទំព័រព័ត៌មាន"
+        };
+
+        function setSamplePrompt(type) {
+            document.getElementById('promptInput').value = samplePrompts[type] || '';
+        }
+
+        function generateEnhancedPrompt() {
+            const input = document.getElementById('promptInput').value.trim();
+            if (!input) {
+                showToast("សូមបញ្ចូលអត្ថបទជាមុនសិន!");
+                return;
+            }
+
+            // RTC framework enhancement template
+            const enhanced = `[Role]: អ្នកគឺជាអ្នកជំនាញជាន់ខ្ពស់លំដាប់ពិភពលោក (Senior Expert) លើវិស័យនេះ។\n` +
+                `[Task]: សូមបំពេញភារកិច្ចដូចតទៅ៖ "${input}" ដោយផ្តល់ចម្លើយលម្អិត ជាជំហានៗ ច្បាស់លាស់ និងមានហេតុផលត្រឹមត្រូវ។\n` +
+                `[Context & Tone]: សំឡេងសរសេរបែបវិជ្ជាជីវៈ ងាយយល់ ប្រើប្រាស់ភាសាខ្មែរត្រឹមត្រូវ ព្រមទាំងផ្តល់ឧទាហរណ៍ជាក់ស្តែង (Best Practices) សម្រាប់យកទៅអនុវត្តបានភ្លាមៗ។\n` +
+                `[Output Format]: រៀបចំជា Bullet points និងមានចំណងជើងរងច្បាស់លាស់។`;
+
+            document.getElementById('promptOutput').innerText = enhanced;
+            completedTools.add('promptTool');
+            updateProgress();
+            showToast("បានបង្កើត Prompt កម្រិតខ្ពស់រួចរាល់!");
+        }
+
+        function copyGeneratedPrompt() {
+            const text = document.getElementById('promptOutput').innerText;
+            if (!text || text.includes("ចុចប៊ូតុង")) {
+                showToast("មិនទាន់មាន Prompt សម្រាប់ចម្លងទេ!");
+                return;
+            }
+            // Safe copy helper
+            const temp = document.createElement("textarea");
+            temp.value = text;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            document.body.removeChild(temp);
+            showToast("បានចម្លង Prompt ទៅ Clipboard!");
+        }
+
+        // ==========================================
+        // TOOL 4: AI CLOTHING & OUTFIT RESTYLER (GEMINI 3.1 FLASH IMAGE)
+        // ==========================================
+        const restylePresets = {
+            suit: "Redesign the person's outfit to be an impeccably tailored, luxury navy-blue business suit with a crisp white shirt and a sleek silk tie. Keep the facial identity, expression, pose, and background intact.",
+            khmer: "Redesign the person's clothing into an elegant, regal traditional Cambodian Khmer silk outfit with delicate golden kbach embroidery, maintaining the exact face, expression, and pose.",
+            cyberpunk: "Change the clothing to a futuristic neon cyberpunk jacket with subtle glowing LED accents and techwear textures, keeping the same person's face and hairstyle.",
+            doctor: "Change the outfit to a clean white professional medical doctor's lab coat with a stethoscope around the neck, preserving the person's exact face and natural pose.",
+            leather: "Replace the clothing with a rugged black vintage leather motorcycle jacket over a dark t-shirt, maintaining original facial features and body shape.",
+            casual: "Transform the outfit into a modern trendy casual style: high-quality pastel-colored polo shirt or crewneck, maintaining the person's authentic facial identity."
+        };
+
+        function setRestylePrompt(type) {
+            const promptBox = document.getElementById('restylePromptInput');
+            promptBox.value = restylePresets[type] || '';
+            showToast("បានជ្រើសរើស Preset ស្ទាយ!");
+        }
+
+        function handleRestyleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            restyleImageMime = file.type || "image/jpeg";
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const dataUrl = evt.target.result;
+                document.getElementById('restyleOrigImg').src = dataUrl;
+                // Extract pure base64 data for API payload
+                restyleImageBase64 = dataUrl.split(',')[1];
+                document.getElementById('restyleUploadLabel').innerText = file.name;
+                showToast("បានបញ្ចូលរូបភាពរួចរាល់!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Helper: Convert initial sample image to base64 if user hasn't uploaded their own
+        async function getRestyleBase64() {
+            if (restyleImageBase64) {
+                return { base64: restyleImageBase64, mime: restyleImageMime };
+            }
+            // Fallback load current img
+            const img = document.getElementById('restyleOrigImg');
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth || 400;
+            canvas.height = img.naturalHeight || 400;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+            return {
+                base64: dataUrl.split(',')[1],
+                mime: 'image/jpeg'
+            };
+        }
+
+        async function generateAIRestyle() {
+            let promptText = document.getElementById('restylePromptInput').value.trim();
+            if (!promptText) {
+                promptText = restylePresets.suit;
+                document.getElementById('restylePromptInput').value = promptText;
+            }
+
+            const spinner = document.getElementById('restyleSpinner');
+            const resultImg = document.getElementById('restyleResultImg');
+            const placeholder = document.getElementById('restylePlaceholder');
+            const btn = document.getElementById('btnGenerateRestyle');
+
+            spinner.classList.remove('hidden');
+            placeholder.classList.add('hidden');
+            btn.disabled = true;
+
+            try {
+                const imgObj = await getRestyleBase64();
+
+                const apiKey = document.getElementById("geminiApiKey").value.trim() || localStorage.getItem("geminiApiKey") || "";
+                if (!apiKey) {
+                    showToast("សូមបញ្ចូល Gemini API Key ជាមុន!");
+                    spinner.classList.add("hidden");
+                    btn.disabled = false;
+                    return;
+                }
+                localStorage.setItem("geminiApiKey", apiKey);
+                const proxyVal = document.getElementById("corsProxy")?.value.trim();
+                if (proxyVal) localStorage.setItem("corsProxy", proxyVal);
+
+                // Use header instead of query param for better security practice
+                const baseUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent";
+                const proxy = (document.getElementById("corsProxy")?.value || "").trim();
+                const apiUrl = proxy ? (proxy.endsWith("?") || proxy.endsWith("/") ? proxy + encodeURIComponent(baseUrl) : proxy + "?url=" + encodeURIComponent(baseUrl)) : baseUrl;
+
+                const systemContext = "You are an expert high-fashion digital wardrobe and photo retoucher. Restyle the clothing and outfit of the person in the image accurately based on the prompt while strictly preserving the person's facial features, identity, ethnicity, and general posture. Output only the edited photorealistic image.";
+
+                const payload = {
+                    contents: [
+                        {
+                            role: "user",
+                            parts: [
+                                { text: `${systemContext}\n\nEditing instruction: ${promptText}` },
+                                {
+                                    inlineData: {
+                                        mimeType: imgObj.mime,
+                                        data: imgObj.base64
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    generationConfig: {
+                        responseModalities: ["IMAGE"]
+                    }
+                };
+
+                async function fetchWithBackoff(url, options, retries = 2, delay = 2000) {
+                    for (let i = 0; i < retries; i++) {
+                        try {
+                            const res = await fetch(url, options);
+                            if (res.ok) return await res.json();
+                            if (res.status === 429 && i < retries - 1) {
+                                await new Promise(r => setTimeout(r, delay * Math.pow(2, i)));
+                                continue;
+                            }
+                            const errBody = await res.json().catch(() => ({}));
+                            throw new Error(`HTTP ${res.status}: ${errBody.error?.message || res.statusText}`);
+                        } catch (err) {
+                            if (i === retries - 1) throw err;
+                            await new Promise(r => setTimeout(r, delay * Math.pow(2, i)));
+                        }
+                    }
+                }
+
+                const result = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-goog-api-key': apiKey
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const candidate = result?.candidates?.[0];
+                const imagePart = candidate?.content?.parts?.find(p => p.inlineData);
+
+                if (imagePart && imagePart.inlineData?.data) {
+                    const generatedUrl = `data:${imagePart.inlineData.mimeType || 'image/png'};base64,${imagePart.inlineData.data}`;
+                    resultImg.src = generatedUrl;
+                    resultImg.classList.remove('hidden');
+                    document.getElementById('btnDownloadRestyle').disabled = false;
+                    completedTools.add('restyleTool');
+                    updateProgress();
+                    showToast("AI បានប្តូរសម្លៀកបំពាក់ជោគជ័យ!");
+                } else {
+                    const textPart = candidate?.content?.parts?.find(p => p.text)?.text;
+                    const finishReason = candidate?.finishReason;
+                    let msg = textPart || "មិនអាចបង្កើតរូបភាពបានទេ។";
+                    if (finishReason === "SAFETY" || finishReason === "IMAGE_SAFETY") {
+                        msg = "រូបភាពត្រូវបានបដិសេធដោយសុវត្ថិភាព (Safety filter)។ សូមសាកល្បង prompt ផ្សេង។";
+                    }
+                    showToast(msg.substring(0, 120));
+                    placeholder.classList.remove('hidden');
+                    placeholder.innerText = msg.substring(0, 150);
+                }
+
+            } catch (error) {
+                console.error("Restyle error:", error);
+                let userMsg = "មានបញ្ហាក្នុងការតភ្ជាប់ AI។";
+                const errStr = String(error.message || error);
+
+                if (errStr.includes("Failed to fetch") || errStr.includes("NetworkError") || errStr.includes("CORS")) {
+                    userMsg = "បញ្ហា CORS។ សូមបំពេញ Proxy URL នៅប្រអប់ខាងលើ (ឧ. https://corsproxy.io/?) ហើយសាកល្បងម្តងទៀត។";
+                } else if (errStr.includes("403") || errStr.includes("API key")) {
+                    userMsg = "API Key មិនត្រឹមត្រូវ ឬគ្មានសិទ្ធិ។ សូមពិនិត្យ Key នៅ AI Studio។";
+                } else if (errStr.includes("429")) {
+                    userMsg = "បានហួសកម្រិត (Rate limit)។ សូមរង់ចាំបន្តិច។";
+                } else if (errStr.includes("400")) {
+                    userMsg = "Request មិនត្រឹមត្រូវ។ សូមសាកល្បងរូបភាពតូចជាង ឬ prompt ផ្សេង។";
+                }
+
+                showToast(userMsg);
+                placeholder.classList.remove('hidden');
+                placeholder.innerText = userMsg;
+            } finally {
+                spinner.classList.add('hidden');
+                btn.disabled = false;
+            }
+        }
+
+        function downloadRestyleResult() {
+            const img = document.getElementById('restyleResultImg');
+            if (!img.src) return;
+            const link = document.createElement('a');
+            link.download = 'ai-outfit-restyled.png';
+            link.href = img.src;
+            link.click();
+            showToast("បានទាញយករូបភាពស្ទាយថ្មី!");
+        }
+
+        // ==========================================
+        // TOOL 5: SELECTIVE COLOR REPLACER
+        // ==========================================
+        function initColorSwapSample() {
+            const sampleImg = new Image();
+            sampleImg.crossOrigin = "anonymous";
+            sampleImg.onload = function() {
+                colorSwapImage = sampleImg;
+                renderColorSwapCanvases();
+            };
+            sampleImg.src = "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop&q=60";
+        }
+
+        function handleColorSwapImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                const img = new Image();
+                img.onload = function() {
+                    colorSwapImage = img;
+                    renderColorSwapCanvases();
+                    showToast("រូបភាពត្រូវបានបញ្ចូលសម្រាប់ប្តូរពណ៌!");
+                };
+                img.src = evt.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function renderColorSwapCanvases() {
+            if (!colorSwapImage) return;
+
+            const origCanvas = document.getElementById('colorSwapOrigCanvas');
+            const resCanvas = document.getElementById('colorSwapResultCanvas');
+            const w = colorSwapImage.naturalWidth || colorSwapImage.width || 400;
+            const h = colorSwapImage.naturalHeight || colorSwapImage.height || 400;
+
+            origCanvas.width = w;
+            origCanvas.height = h;
+            resCanvas.width = w;
+            resCanvas.height = h;
+
+            const oCtx = origCanvas.getContext('2d');
+            oCtx.drawImage(colorSwapImage, 0, 0, w, h);
+
+            applyColorSwap();
+        }
+
+        function pickColorForSwap(event) {
+            const canvas = document.getElementById('colorSwapOrigCanvas');
+            if (!canvas || !colorSwapImage) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+
+            const x = Math.floor((event.clientX - rect.left) * scaleX);
+            const y = Math.floor((event.clientY - rect.top) * scaleY);
+
+            const ctx = canvas.getContext('2d');
+            const pixel = ctx.getImageData(x, y, 1, 1).data;
+            pickedSourceRgb = { r: pixel[0], g: pixel[1], b: pixel[2] };
+
+            const hex = rgbToHex(pixel[0], pixel[1], pixel[2]);
+            document.getElementById('sourceColorPicker').value = hex;
+            document.getElementById('sourceColorHex').innerText = hex.toUpperCase();
+
+            showToast(`បានកំណត់ពណ៌ដើម: ${hex.toUpperCase()}`);
+            applyColorSwap();
+        }
+
+        function updatePickedSourceColor(hex) {
+            pickedSourceRgb = hexToRgb(hex);
+            document.getElementById('sourceColorHex').innerText = hex.toUpperCase();
+            applyColorSwap();
+        }
+
+        // Handle target RGB color picker change: Auto-add to swatches and apply
+        function handleTargetColorChange(hex) {
+            const upperHex = hex.toUpperCase();
+            document.getElementById('targetColorHex').innerText = upperHex;
+            addColorToSwatches(upperHex);
+            applyColorSwap();
+        }
+
+        function setTargetQuickColor(hex) {
+            const upperHex = hex.toUpperCase();
+            document.getElementById('targetColorPicker').value = upperHex;
+            document.getElementById('targetColorHex').innerText = upperHex;
+            applyColorSwap();
+            renderColorSwatches();
+        }
+
+        // Add a new color swatch if not already in the list
+        function addColorToSwatches(hex) {
+            const formatted = hex.toUpperCase();
+            const index = customColorSwatches.indexOf(formatted);
+            if (index !== -1) {
+                // Move to front if already exists
+                customColorSwatches.splice(index, 1);
+            }
+            customColorSwatches.unshift(formatted);
+            // Limit to max 14 swatches
+            if (customColorSwatches.length > 14) {
+                customColorSwatches.pop();
+            }
+            renderColorSwatches();
+        }
+
+        // Manually save the currently selected target color
+        function saveCurrentTargetColor() {
+            const hex = document.getElementById('targetColorPicker').value.toUpperCase();
+            addColorToSwatches(hex);
+            showToast(`បានរក្សាទុកពណ៌ ${hex} ចូល Palette!`);
+        }
+
+        // Remove a specific color swatch
+        function removeColorSwatch(event, hexToRemove) {
+            event.stopPropagation(); // Prevent selecting the swatch when clicking delete
+            customColorSwatches = customColorSwatches.filter(c => c !== hexToRemove);
+            renderColorSwatches();
+            showToast(`បានលុបពណ៌ ${hexToRemove} ចេញពីជួរពណ៌!`);
+        }
+
+        // Reset to default swatches
+        function resetColorSwatches() {
+            customColorSwatches = ['#DC2626', '#16A34A', '#2563EB', '#D97706', '#9333EA', '#EC4899', '#0F172A'];
+            renderColorSwatches();
+            showToast("បានកំណត់ជួរពណ៌ឡើងវិញ!");
+        }
+
+        // Render swatches with interactive remove button on hover
+        function renderColorSwatches() {
+            const container = document.getElementById('swatchListContainer');
+            if (!container) return;
+
+            const currentActiveHex = document.getElementById('targetColorPicker').value.toUpperCase();
+
+            container.innerHTML = customColorSwatches.map(hex => {
+                const isActive = (hex === currentActiveHex);
+                return `
+                    <div class="relative group inline-block">
+                        <button type="button" 
+                                onclick="setTargetQuickColor('${hex}')" 
+                                title="${hex}" 
+                                style="background-color: ${hex};" 
+                                class="w-6 h-6 rounded-full transition-transform hover:scale-110 border ${isActive ? 'ring-2 ring-cyan-400 ring-offset-2 ring-offset-slate-900 border-white' : 'border-white/20'} flex items-center justify-center shadow-sm">
+                        </button>
+                        <!-- Delete / Remove button on hover -->
+                        <button type="button" 
+                                onclick="removeColorSwatch(event, '${hex}')" 
+                                title="ដកពណ៌ ${hex} ចេញ" 
+                                class="absolute -top-1.5 -right-1.5 w-3.5 h-3.5 bg-rose-600 hover:bg-rose-500 text-white rounded-full text-[9px] font-bold flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-md leading-none">
+                            &times;
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function updateColorTolerance(val) {
+            colorTolerance = parseInt(val, 10);
+            document.getElementById('colorToleranceVal').innerText = val;
+            applyColorSwap();
+        }
+
+        // RGB / HSL conversion utilities
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            const max = Math.max(r, g, b), min = Math.min(r, g, b);
+            let h, s, l = (max + min) / 2;
+            if (max === min) {
+                h = s = 0;
+            } else {
+                const d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                    case g: h = (b - r) / d + 2; break;
+                    case b: h = (r - g) / d + 4; break;
+                }
+                h /= 6;
+            }
+            return [h, s, l];
+        }
+
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1/3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+
+        function hexToRgb(hex) {
+            const clean = hex.replace('#', '');
+            const bigint = parseInt(clean, 16);
+            return {
+                r: (bigint >> 16) & 255,
+                g: (bigint >> 8) & 255,
+                b: bigint & 255
+            };
+        }
+
+        function rgbToHex(r, g, b) {
+            return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+        }
+
+        function applyColorSwap() {
+            if (!colorSwapImage) return;
+
+            const resCanvas = document.getElementById('colorSwapResultCanvas');
+            const w = resCanvas.width;
+            const h = resCanvas.height;
+            const ctx = resCanvas.getContext('2d');
+
+            ctx.drawImage(colorSwapImage, 0, 0, w, h);
+            const imgData = ctx.getImageData(0, 0, w, h);
+            const data = imgData.data;
+
+            const targetHex = document.getElementById('targetColorPicker').value;
+            document.getElementById('targetColorHex').innerText = targetHex.toUpperCase();
+            const targetRgb = hexToRgb(targetHex);
+            const targetHsl = rgbToHsl(targetRgb.r, targetRgb.g, targetRgb.b);
+
+            const srcRgb = pickedSourceRgb;
+            const srcHsl = rgbToHsl(srcRgb.r, srcRgb.g, srcRgb.b);
+            
+            // Adjusted tolerance scale
+            const tol = (colorTolerance / 100) * 1.6;
+
+            // Target characteristics
+            const targetIsWhite = (targetHsl[2] > 0.88);
+            const targetIsBlack = (targetHsl[2] < 0.12);
+            const targetIsAchromatic = (targetHsl[1] < 0.12 || targetIsWhite || targetIsBlack);
+
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+
+                // Normalized Euclidean color difference
+                const rDiff = (r - srcRgb.r) / 255;
+                const gDiff = (g - srcRgb.g) / 255;
+                const bDiff = (b - srcRgb.b) / 255;
+                const dist = Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+
+                if (dist <= tol) {
+                    // Smooth transition feather factor (0 at border, 1 at center of picked color)
+                    const factor = Math.max(0, Math.min(1, 1 - (dist / tol)));
+                    const curHsl = rgbToHsl(r, g, b);
+
+                    let newH = targetHsl[0];
+                    let newS = targetHsl[1];
+                    let newL;
+
+                    if (targetIsWhite) {
+                        // When replacing with White: Lift luminosity to white range while preserving subtle shading/texture
+                        newS = targetHsl[1] * 0.1; // Strip out source hue/saturation completely
+                        const shadeDelta = (curHsl[2] - srcHsl[2]) * 0.35; // Keep slight folds/shading
+                        newL = Math.min(1, Math.max(0.85, targetHsl[2] + shadeDelta));
+                    } else if (targetIsBlack) {
+                        // When replacing with Black: Lower luminosity significantly while preserving highlights
+                        newS = targetHsl[1] * 0.2;
+                        const shadeDelta = (curHsl[2] - srcHsl[2]) * 0.2;
+                        newL = Math.min(0.25, Math.max(0.02, targetHsl[2] + shadeDelta));
+                    } else if (targetIsAchromatic) {
+                        // Gray tones
+                        newS = targetHsl[1];
+                        const shadeRatio = srcHsl[2] > 0 ? (curHsl[2] / srcHsl[2]) : 1;
+                        newL = Math.min(1, Math.max(0, targetHsl[2] * shadeRatio));
+                    } else {
+                        // Standard vibrant chromatic replacement:
+                        newS = Math.min(1, targetHsl[1] * 0.95 + curHsl[1] * 0.05);
+                        // Natural luminance adjustment
+                        const lOffset = curHsl[2] - srcHsl[2];
+                        newL = Math.min(1, Math.max(0.05, targetHsl[2] + lOffset * 0.6));
+                    }
+
+                    const convertedRgb = hslToRgb(newH, newS, newL);
+
+                    // Interpolate smoothly using anti-aliased factor
+                    data[i]     = Math.round(r * (1 - factor) + convertedRgb[0] * factor);
+                    data[i + 1] = Math.round(g * (1 - factor) + convertedRgb[1] * factor);
+                    data[i + 2] = Math.round(b * (1 - factor) + convertedRgb[2] * factor);
+                }
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+            completedTools.add('colorSwapTool');
+            updateProgress();
+        }
+
+        function downloadSwappedColorImage() {
+            const canvas = document.getElementById('colorSwapResultCanvas');
+            const link = document.createElement('a');
+            link.download = 'color-replaced-image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            showToast("បានទាញយករូបភាពដែលបានប្តូរពណ៌!");
+        }
+
+        // Initialize sample color replacer when ready
+        window.addEventListener('DOMContentLoaded', () => {
+            initColorSwapSample();
+            renderColorSwatches();
+            const savedKey = localStorage.getItem("geminiApiKey");
+            if (savedKey) {
+                const keyInput = document.getElementById("geminiApiKey");
+                if (keyInput) keyInput.value = savedKey;
+            }
+            const savedProxy = localStorage.getItem("corsProxy");
+            if (savedProxy) {
+                const proxyInput = document.getElementById("corsProxy");
+                if (proxyInput) proxyInput.value = savedProxy;
+            }
+        });
+
+        // ==========================================
+        // TOOL 3: IMAGE FILTER LOGIC
+        // ==========================================
+        let currentFilterStyle = "none";
+        let currentBrightness = 100;
+
+        function handleFilterUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                document.getElementById('filterTargetImg').src = evt.target.result;
+                showToast("បានប្តូររូបភាពថ្មី!");
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function applyFilter(filter) {
+            currentFilterStyle = filter;
+            renderFilters();
+        }
+
+        function changeBrightness(val) {
+            currentBrightness = val;
+            document.getElementById('brightVal').innerText = val + '%';
+            renderFilters();
+        }
+
+        function renderFilters() {
+            const img = document.getElementById('filterTargetImg');
+            img.style.filter = `${currentFilterStyle === 'none' ? '' : currentFilterStyle} brightness(${currentBrightness}%)`;
+        }
+
+        function downloadFilteredImage() {
+            const img = document.getElementById('filterTargetImg');
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            canvas.width = img.naturalWidth || 600;
+            canvas.height = img.naturalHeight || 400;
+
+            ctx.filter = `${currentFilterStyle === 'none' ? '' : currentFilterStyle} brightness(${currentBrightness}%)`;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            const link = document.createElement('a');
+            link.download = 'filtered-image.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            completedTools.add('filterTool');
+            updateProgress();
+            showToast("បានទាញយករូបភាពដែលបានកែ!");
+        }
+
+        // ==========================================
+        // CATEGORY FILTER & SEARCH
+        // ==========================================
+        function filterCategory(cat) {
+            // Update active pill
+            const pills = document.querySelectorAll('.cat-pill');
+            pills.forEach(p => {
+                p.classList.remove('bg-indigo-600', 'text-white');
+                p.classList.add('bg-slate-800/60', 'text-slate-400');
+            });
+            event.target.closest('button').classList.add('bg-indigo-600', 'text-white');
+            event.target.closest('button').classList.remove('bg-slate-800/60', 'text-slate-400');
+
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach(card => {
+                if (cat === 'all' || card.dataset.category.includes(cat)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+
+        function searchTools() {
+            const query = document.getElementById('toolSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.tool-card');
+            cards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                if (name.includes(query)) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

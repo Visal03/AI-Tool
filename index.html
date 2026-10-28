@@ -194,9 +194,6 @@
 
             <!-- ================= TOOL 1: BACKGROUND REMOVER ================= -->
             <div class="tool-card glow-card bg-[#0f172a]/95 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between" data-category="image" data-name="remove background លុបរូបភាព កាត់">
-                <div>
-                    <!-- Header Badges -->
-                    <div class="flex items-center justify-between mb-3">
                         <span class="px-2.5 py-1 rounded-lg bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 text-xs font-semibold flex items-center gap-1.5">
                             <i data-lucide="image-minus" class="w-3.5 h-3.5"></i>
                             ឧបករណ៍ទី ១ • Image Tool
@@ -231,7 +228,7 @@
                             </div>
                         </div>
 
-                        <!-- Mode Selection -->
+                        <!-- Mode Selection: Special circular mode added for this exact case -->
                         <div class="space-y-1.5 pt-1">
                             <div class="flex items-center justify-between text-[11px] text-slate-300">
                                 <span class="font-medium">ជ្រើសរើសរបៀបកាត់ (Cutting Mode):</span>
@@ -258,7 +255,7 @@
                             </div>
                         </div>
 
-                        <!-- Lens Circle Margin Adjustment -->
+                        <!-- Lens Circle Margin Adjustment (Shown when circle mode is active) -->
                         <div id="circleAdjustControls" class="space-y-1 pt-1 bg-slate-900/60 border border-slate-800 p-2 rounded-lg">
                             <div class="flex items-center justify-between text-xs text-slate-300">
                                 <span class="flex items-center gap-1"><i data-lucide="scan" class="w-3 h-3 text-indigo-400"></i> ទំហំរង្វង់កាត់ (Circle Radius Trim):</span>
@@ -277,7 +274,7 @@
                             <input type="range" id="toleranceRange" min="5" max="90" value="35" oninput="updateTolerance(this.value)" class="w-full accent-indigo-500 h-1.5 bg-slate-800 rounded-lg cursor-pointer">
                         </div>
 
-                        <!-- Manual Touch-up Brush Tools -->
+                        <!-- Manual Touch-up Brush Tools (Erase or Restore) -->
                         <div class="bg-slate-900/90 border border-slate-800/80 rounded-lg p-2 space-y-1.5">
                             <div class="flex items-center justify-between text-[11px]">
                                 <span class="text-slate-300 font-medium flex items-center gap-1">
@@ -339,7 +336,7 @@
                 </div>
             </div>
 
-<!-- ================= TOOL 4: AI CLOTHING & OUTFIT RESTYLER (NEW FEATURE) ================= -->
+            <!-- ================= TOOL 4: AI CLOTHING & OUTFIT RESTYLER (NEW FEATURE) ================= -->
             <div class="tool-card glow-card bg-[#0f172a]/95 border border-amber-500/30 rounded-2xl p-5 flex flex-col justify-between" data-category="image ai-restyler" data-name="clothing outfit restyle ប្តូរស្ទាយ សម្លៀកបំពាក់ ម៉ូត ខោអាវ">
                 <div>
                     <!-- Header Badges -->
@@ -406,17 +403,6 @@
                             <textarea id="restylePromptInput" rows="2" 
                                       placeholder="ឧ. ប្តូរសម្លៀកបំពាក់ទៅជាឈុតអាវធំពណ៌ទឹកប៊ិចក្រម៉ៅ ពាក់ក្រវាត់កឆ្នូតក្រហម..." 
                                       class="w-full bg-slate-900/90 border border-slate-800 text-xs rounded-xl p-2.5 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition resize-none"></textarea>
-                        </div>
-                        <!-- Gemini API Key (required for restyle) -->
-                        <div class="space-y-1">
-                            <label class="text-[11px] text-slate-400">Gemini API Key (សម្រាប់ប្តូរស្ទាយ):</label>
-                            <input type="password" id="geminiApiKey" placeholder="AIza..." 
-                                   class="w-full bg-slate-900/90 border border-slate-800 text-xs rounded-xl p-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
-                            <p class="text-[9px] text-slate-500">Key ត្រូវបានរក្សាទុកក្នុង localStorage។ <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-amber-400 underline">ទទួល Key</a></p>
-                            <p class="text-[9px] text-rose-400 mt-1 leading-tight">⚠️ Browser បិទការហៅ Gemini ដោយផ្ទាល់ (CORS)។ សម្រាប់សាកល្បង សូមបំពេញ Proxy ខាងក្រោម។</p>
-                            <input type="text" id="corsProxy" placeholder="ឧ. https://corsproxy.io/?  (សម្រាប់ demo)" 
-                                   class="w-full mt-1 bg-slate-900/90 border border-slate-800 text-xs rounded-xl p-2 text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 transition">
-                            <p class="text-[9px] text-slate-500 mt-0.5">Proxy សាធារណៈមិនសុវត្ថិភាព (API Key អាចលេច)។ ប្រើតែសម្រាប់សាកល្បង។</p>
                         </div>
 
                         <!-- Comparison / Result display -->
@@ -1057,7 +1043,7 @@
                     if (cx > 0) neighbors.push(curr - 1);
                     if (cx < w - 1) neighbors.push(curr + 1);
                     if (cy > 0) neighbors.push(curr - w);
-                    if (cy < h - 1) neighbors.push(curr + w);
+                    if (cy < w - 1) neighbors.push(curr + w);
 
                     for (let n = 0; n < neighbors.length; n++) {
                         const nIdx = neighbors[n];
@@ -1299,23 +1285,11 @@
             try {
                 const imgObj = await getRestyleBase64();
 
-                const apiKey = document.getElementById("geminiApiKey").value.trim() || localStorage.getItem("geminiApiKey") || "";
-                if (!apiKey) {
-                    showToast("សូមបញ្ចូល Gemini API Key ជាមុន!");
-                    spinner.classList.add("hidden");
-                    btn.disabled = false;
-                    return;
-                }
-                localStorage.setItem("geminiApiKey", apiKey);
-                const proxyVal = document.getElementById("corsProxy")?.value.trim();
-                if (proxyVal) localStorage.setItem("corsProxy", proxyVal);
+                // Gemini 3.1 Flash Image (Image-to-Image / Editing) payload
+                const apiKey = ""; // Canvas runtime provides key
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent?key=${apiKey}`;
 
-                // Use header instead of query param for better security practice
-                const baseUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent";
-                const proxy = (document.getElementById("corsProxy")?.value || "").trim();
-                const apiUrl = proxy ? (proxy.endsWith("?") || proxy.endsWith("/") ? proxy + encodeURIComponent(baseUrl) : proxy + "?url=" + encodeURIComponent(baseUrl)) : baseUrl;
-
-                const systemContext = "You are an expert high-fashion digital wardrobe and photo retoucher. Restyle the clothing and outfit of the person in the image accurately based on the prompt while strictly preserving the person's facial features, identity, ethnicity, and general posture. Output only the edited photorealistic image.";
+                const systemContext = "You are an expert high-fashion digital wardrobe and photo retoucher. Restyle the clothing and outfit of the person in the image accurately based on the prompt while strictly preserving the person's facial features, identity, ethnicity, and general posture. Output the edited photorealistic image.";
 
                 const payload = {
                     contents: [
@@ -1333,11 +1307,12 @@
                         }
                     ],
                     generationConfig: {
-                        responseModalities: ["IMAGE"]
+                        responseModalities: ['TEXT', 'IMAGE']
                     }
                 };
 
-                async function fetchWithBackoff(url, options, retries = 2, delay = 2000) {
+                // Exponential backoff fetch function
+                async function fetchWithBackoff(url, options, retries = 3, delay = 1500) {
                     for (let i = 0; i < retries; i++) {
                         try {
                             const res = await fetch(url, options);
@@ -1346,8 +1321,7 @@
                                 await new Promise(r => setTimeout(r, delay * Math.pow(2, i)));
                                 continue;
                             }
-                            const errBody = await res.json().catch(() => ({}));
-                            throw new Error(`HTTP ${res.status}: ${errBody.error?.message || res.statusText}`);
+                            return await res.json();
                         } catch (err) {
                             if (i === retries - 1) throw err;
                             await new Promise(r => setTimeout(r, delay * Math.pow(2, i)));
@@ -1357,10 +1331,7 @@
 
                 const result = await fetchWithBackoff(apiUrl, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-goog-api-key': apiKey
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
 
@@ -1376,35 +1347,18 @@
                     updateProgress();
                     showToast("AI បានប្តូរសម្លៀកបំពាក់ជោគជ័យ!");
                 } else {
+                    // If model responded with text feedback
                     const textPart = candidate?.content?.parts?.find(p => p.text)?.text;
-                    const finishReason = candidate?.finishReason;
-                    let msg = textPart || "មិនអាចបង្កើតរូបភាពបានទេ។";
-                    if (finishReason === "SAFETY" || finishReason === "IMAGE_SAFETY") {
-                        msg = "រូបភាពត្រូវបានបដិសេធដោយសុវត្ថិភាព (Safety filter)។ សូមសាកល្បង prompt ផ្សេង។";
-                    }
-                    showToast(msg.substring(0, 120));
+                    console.log("AI message:", textPart);
+                    showToast(textPart || "មិនអាចបង្កើតរូបភាពបានទេ។ សូមសាកល្បងម្ដងទៀត!");
                     placeholder.classList.remove('hidden');
-                    placeholder.innerText = msg.substring(0, 150);
+                    placeholder.innerText = textPart ? textPart.substring(0, 100) : "សូមព្យាយាមម្តងទៀត";
                 }
 
             } catch (error) {
                 console.error("Restyle error:", error);
-                let userMsg = "មានបញ្ហាក្នុងការតភ្ជាប់ AI។";
-                const errStr = String(error.message || error);
-
-                if (errStr.includes("Failed to fetch") || errStr.includes("NetworkError") || errStr.includes("CORS")) {
-                    userMsg = "បញ្ហា CORS។ សូមបំពេញ Proxy URL នៅប្រអប់ខាងលើ (ឧ. https://corsproxy.io/?) ហើយសាកល្បងម្តងទៀត។";
-                } else if (errStr.includes("403") || errStr.includes("API key")) {
-                    userMsg = "API Key មិនត្រឹមត្រូវ ឬគ្មានសិទ្ធិ។ សូមពិនិត្យ Key នៅ AI Studio។";
-                } else if (errStr.includes("429")) {
-                    userMsg = "បានហួសកម្រិត (Rate limit)។ សូមរង់ចាំបន្តិច។";
-                } else if (errStr.includes("400")) {
-                    userMsg = "Request មិនត្រឹមត្រូវ។ សូមសាកល្បងរូបភាពតូចជាង ឬ prompt ផ្សេង។";
-                }
-
-                showToast(userMsg);
+                showToast("មានបញ្ហាក្នុងការតភ្ជាប់ AI។ សូមសាកល្បងម្ដងទៀត!");
                 placeholder.classList.remove('hidden');
-                placeholder.innerText = userMsg;
             } finally {
                 spinner.classList.add('hidden');
                 btn.disabled = false;
@@ -1742,16 +1696,6 @@
         window.addEventListener('DOMContentLoaded', () => {
             initColorSwapSample();
             renderColorSwatches();
-            const savedKey = localStorage.getItem("geminiApiKey");
-            if (savedKey) {
-                const keyInput = document.getElementById("geminiApiKey");
-                if (keyInput) keyInput.value = savedKey;
-            }
-            const savedProxy = localStorage.getItem("corsProxy");
-            if (savedProxy) {
-                const proxyInput = document.getElementById("corsProxy");
-                if (proxyInput) proxyInput.value = savedProxy;
-            }
         });
 
         // ==========================================
